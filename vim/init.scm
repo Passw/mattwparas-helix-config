@@ -85,8 +85,35 @@
                   (del "delete_selection"))
           ;; Select bindings
           ;; TODO: Rename this to VIS
-          (select (a "select_textobject_around")
-                  (i "select_textobject_inner")
+          (select (a (w ":select-around-word")
+                  (p ":select-around-paragraph")
+                  (f ":select-around-function")
+                  (c ":select-around-comment")
+                  (e ":select-around-data-structure")
+                  (x ":select-around-html-tag")
+                  (t ":select-around-type-definition")
+                  (T ":select-around-test")
+                  ("{" ":select-around-curly")
+                  ("[" ":select-around-square")
+                  ("(" ":select-around-paren")
+                  ("<" ":select-around-arrow")
+                  ("\"" ":select-around-double-quote")
+                  ("'" ":select-around-single-quote")
+                  )
+                  (i (w ":select-inner-word")
+                    (p ":select-inner-paragraph")
+                    (f ":select-inner-function")
+                    (c ":select-inner-comment")
+                    (e ":select-inner-data-structure")
+                    (x ":select-inner-html-tag")
+                    (t ":select-inner-type-definition")
+                    (T ":select-inner-test")
+                    ("{" ":select-inner-curly")
+                    ("[" ":select-inner-square")
+                    ("(" ":select-inner-paren")
+                    ("<" ":select-inner-arrow")
+                    ("\"" ":select-inner-double-quote")
+                    ("'" ":select-inner-single-quote"))
                   (h ":extend-char-left-same-line")
                   (l ":extend-char-right-same-line")
                   (j ":extend-line-down")
@@ -130,4 +157,16 @@
          yank-line-start
          yank-line-end
          yank-line-start-non-whitespace
+          select-inner-curly
+          select-around-curly
+          select-inner-paren
+          select-around-paren
+          select-inner-square
+          select-around-square
+          select-inner-double-quote
+          select-around-double-quote
+          select-inner-single-quote
+          select-around-single-quote
+          select-inner-arrow
+          select-around-arrow
          )
