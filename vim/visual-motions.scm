@@ -130,7 +130,7 @@
 (define (select-inner-test)
   (select-inner-impl T-key))
 
-;; TODO: broken - needs more work
+;; TODO: search forward entire file, not just current line
 ;; vi{
 ;; vi[
 ;; vi(
@@ -145,23 +145,35 @@
   (helix.static.select_textobject_inner)
   (trigger-on-key-callback (string->key-event 
                             (string (if (char=? bracket-ch #\{) #\{
-                                     (if (char=? bracket-ch #\() #\(
-                                         #\[)))))
+                                      (if (char=? bracket-ch #\") #\"
+                                        (if (char=? bracket-ch #\") #\"
+                                          (if (char=? bracket-ch #\') #\'
+                                            (if (char=? bracket-ch #\<) #\<
+                                         #\[))))))))
   
   ;; Check if cursor moved (for inner, cursor always moves if selection succeeds)
   (when (not (has-real-selection? start-pos))
     ;; No selection made - search forward for the bracket
     (when (move-to-char bracket-ch #t)
+      (when (or 
+              (char=? bracket-ch #\")
+              (char=? bracket-ch #\')
+            )
+        (move-right-n 1))  ; Move past quote to avoid re-selecting same quotes
       ;; Try the textobject again
       (helix.static.select_textobject_inner)
       (trigger-on-key-callback (string->key-event 
                                 (string (if (char=? bracket-ch #\{) #\{
-                                         (if (char=? bracket-ch #\() #\(
-                                             #\[))))))))
+                                          (if (char=? bracket-ch #\") #\"
+                                            (if (char=? bracket-ch #\") #\"
+                                              (if (char=? bracket-ch #\') #\'
+                                                (if (char=? bracket-ch #\<) #\<
+                                             #\[)))))))))))
+
 
 ;; Select around bracket - enhanced with forward search
 ;; Around is trickier because cursor might not move if we're on the opening bracket
-;; TODO: broken - needs more work
+;; TODO: search forward entire file, not just current line
 ;; va{
 ;; va[
 ;; va(
@@ -177,8 +189,11 @@
   (helix.static.select_textobject_around)
   (trigger-on-key-callback (string->key-event 
                             (string (if (char=? bracket-ch #\{) #\{
-                                     (if (char=? bracket-ch #\() #\(
-                                         #\[)))))
+                                      (if (char=? bracket-ch #\") #\"
+                                        (if (char=? bracket-ch #\") #\"
+                                          (if (char=? bracket-ch #\') #\'
+                                            (if (char=? bracket-ch #\<) #\<
+                                         #\[))))))))
   
   (define end-pos (cursor-position))
   
@@ -193,11 +208,19 @@
   ;; If cursor didn't move AND we're not on the target bracket, search forward
   (when (and (not cursor-moved) (not on-target-bracket))
     (when (move-to-char bracket-ch #t)
+      (when (or 
+              (char=? bracket-ch #\")
+              (char=? bracket-ch #\')
+            )
+        (move-right-n 1))  ; Move past quote to avoid re-selecting same quotes
       (helix.static.select_textobject_around)
       (trigger-on-key-callback (string->key-event 
                                 (string (if (char=? bracket-ch #\{) #\{
-                                         (if (char=? bracket-ch #\() #\(
-                                             #\[))))))))
+                                          (if (char=? bracket-ch #\") #\"
+                                            (if (char=? bracket-ch #\") #\"
+                                              (if (char=? bracket-ch #\') #\'
+                                                (if (char=? bracket-ch #\<) #\<
+                                             #\[)))))))))))
 
 ;; Public API functions
 (define (select-inner-curly)
