@@ -180,7 +180,6 @@
 (define (select-inner-test)
   (select-inner-impl T-key))
 
-;; TODO: 
 ;; vi{
 ;; vi[
 ;; vi(
@@ -209,8 +208,6 @@
 
 
 ;; Select around bracket - enhanced with forward search
-;; Around is trickier because cursor might not move if we're on the opening bracket
-;; TODO: search forward entire file, not just current line
 ;; va{
 ;; va[
 ;; va(
